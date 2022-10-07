@@ -10,14 +10,32 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:check-box-task-input.helloWorld"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "check-box-task-input.helloWorld",
-        "title": "Hello World"
+        "command": "basic.runCommand",
+        "title": "Select precheck"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "PickCommand",
+        "type": "object",
+        "properties": {
+          "basic.command": {
+            "type": "string",
+            "description": "Command to be execute with argsToPick.",
+            "default": ""
+          },
+          "basic.argsToPick": {
+            "type": "array",
+            "description": "Args that can be pass to basic.command.",
+            "default": []
+          }
+        }
       }
     ]
   },
