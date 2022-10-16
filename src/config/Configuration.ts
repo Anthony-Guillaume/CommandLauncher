@@ -1,6 +1,6 @@
 import { workspace } from "vscode";
 
-const baseSectionConfig = 'basic';
+const baseSectionConfig = 'commandLauncher';
 
 export const enum Section {
     'command' = 'command',

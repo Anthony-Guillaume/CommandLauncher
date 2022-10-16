@@ -3,10 +3,13 @@ import { loadActions } from "../config/JsonDecoder";
 import { CommandTreeProvider, Item } from "./CommandTree";
 
 export function buildCommandTreeProvider(): CommandTreeProvider {
+    return new CommandTreeProvider(loadItems());
+}
+
+export function loadItems(): Item[] {
     const actions = loadActions();
     const groups = findGroups(actions);
-    const items = buildItems(groups);
-    return new CommandTreeProvider(items);
+    return buildItems(groups);
 }
 
 function buildItems(groups: Map<string, Action[]>): Item[] {
@@ -26,23 +29,17 @@ function buildItems(groups: Map<string, Action[]>): Item[] {
     return items;
 }
 
-function findGroups(actions: Action): Map<string, Action[]> {
+function findGroups(actions: Action[]): Map<string, Action[]> {
     const groups = new Map<string, Action[]>();
-    groups.set(actions.group!!, [actions]);
+    actions.forEach(v => {
+        if (groups.has(v.group!!)) {
+            groups.get(v.group!!)!!.push(v);
+        } else {
+            groups.set(v.group!!, [v]);
+        }
+    });
     return groups;
 }
-
-// function findGroups(actions: Action[]): Map<string, Action[]> {
-//     const groups = new Map<string, Action[]>();
-//     actions.forEach(v => {
-//         if (groups.has(v.group)) {
-//             groups.get(v.group)!!.push(v);
-//         } else {
-//             groups.set(v.group, [v]);
-//         }
-//     });
-//     return groups;
-// }
 
 function buildLabel(action: Action) {
     if (action.label === undefined) {

@@ -1,4 +1,5 @@
-import { Command, Event, ProviderResult, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from "vscode";
+import { Command, Event, EventEmitter, ProviderResult, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from "vscode";
+import { loadItems } from "./CommandTreeBuilder";
 
 export class CommandTreeProvider implements TreeDataProvider<Item> {
 
@@ -8,7 +9,13 @@ export class CommandTreeProvider implements TreeDataProvider<Item> {
         this.data = items;
     }
 
-    onDidChangeTreeData?: Event<Item | null | undefined> | undefined;
+    private _onDidChangeTreeData: EventEmitter<Item | undefined | null | void> = new EventEmitter<Item | undefined | null | void>();
+    readonly onDidChangeTreeData: Event<Item | undefined | null | void> = this._onDidChangeTreeData.event;
+
+    refresh() {
+        this.data = loadItems();
+        this._onDidChangeTreeData.fire();
+    }
 
     getTreeItem(element: Item): TreeItem | Thenable<TreeItem> {
         return element;

@@ -4,9 +4,14 @@ import { Action } from './config/Configuration';
 import { buildCommandTreeProvider } from './view/CommandTreeBuilder';
 
 export function activate(context: ExtensionContext) {
-	commands.registerCommand("launcher.onItemTreeSelected", (action: Action) => showQuickPick(action));
-
+	const provider = buildCommandTreeProvider();
 	context.subscriptions.push(
-		window.registerTreeDataProvider('launcher', buildCommandTreeProvider())
+		window.registerTreeDataProvider('launcher', provider)
+	);
+	context.subscriptions.push(
+		commands.registerCommand("launcher.onItemTreeSelected", (action: Action) => showQuickPick(action))
+	);
+	context.subscriptions.push(
+		commands.registerCommand("commandLauncher.refresh", () => provider.refresh())
 	);
 }

@@ -1,16 +1,14 @@
 import { Action, fillType, getConfiguration, Section } from "./Configuration";
 
-export function loadActions(): Action {
-    const actions = getConfiguration().get<Action>(Section.actions,
-        {
-            command: "",
-            arguments: []
-        }
-    );
-    console.log(JSON.stringify(actions));
-    actions.arguments.forEach(v => fillType(v));
-    fillUndefined(actions);
+export function loadActions(): Action[] {
+    const actions = getConfiguration().get<Action[]>(Section.actions, []);
+    actions.forEach(v => fillOptionalProperties(v));
     return actions;
+}
+
+function fillOptionalProperties(action: Action) {
+    action.arguments.forEach(v => fillType(v));
+    fillUndefined(action);
 }
 
 function fillUndefined(action: Action) {

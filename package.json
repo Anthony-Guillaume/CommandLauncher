@@ -1,6 +1,6 @@
 {
-  "name": "check-box-task-input",
-  "displayName": "Check box task input",
+  "name": "command-launcher",
+  "displayName": "Command launcher",
   "description": "Add check box type to task input type",
   "version": "0.0.1",
   "engines": {
@@ -17,8 +17,9 @@
   "contributes": {
     "commands": [
       {
-        "command": "basic.runCommand",
-        "title": "Select precheck"
+        "command": "commandLauncher.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
       }
     ],
     "viewsContainers": {
@@ -26,7 +27,7 @@
         {
           "id": "command-launcher",
           "title": "Command launcher",
-          "icon": "$(heart)"
+          "icon": "$(run)"
         }
       ]
     },
@@ -35,82 +36,95 @@
         {
           "id": "launcher",
           "name": "At your command",
-          "contextualTitle": "launcher"
+          "contextualTitle": "Command launcher"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "commandLauncher.refresh",
+          "when": "view == launcher",
+          "group": "navigation"
         }
       ]
     },
     "configuration": {
-      "title": "TESTING",
+      "title": "Actions",
       "properties": {
-        "basic.actions": {
-          "type": "object",
+        "commandLauncher.actions": {
+          "type": "array",
           "description": "Array of actions to be provided to user.",
-          "additionalProperties": false,
-          "required": [
-            "command",
-            "arguments"
-          ],
-          "properties": {
-            "group": {
-              "description": "All command with same group will be packed in tree.",
-              "type": "string",
-              "default": ""
-            },
-            "label": {
-              "description": "Label to be shown in tree. If none, command will be shown instead.",
-              "type": "string",
-              "default": ""
-            },
-            "command": {
-              "description": "Command to be executed.",
-              "type": "string"
-            },
-            "arguments": {
-              "description": "",
-              "type": "array",
-              "default": [],
-              "items": {
-                "description": "Arguments, can be string or input e.g. [-R, -i, ${input:myScript.sh}]",
-                "type": [
-                  "string",
-                  "object"
-                ],
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "title": "promptString",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "label"
-                    ],
-                    "properties": {
-                      "label": {
-                        "description": "Shown in the quick input, provides context for the input.",
-                        "type": "string"
-                      }
-                    }
-                  },
-                  {
-                    "title": "pickString",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "options"
-                    ],
-                    "properties": {
-                      "options": {
-                        "description": "An array of options for the user to pick from.",
-                        "type": "array",
-                        "items": {
+          "default": [],
+          "items": {
+            "type": "object",
+            "description": "Command and arguments associated.",
+            "additionalProperties": false,
+            "required": [
+              "command",
+              "arguments"
+            ],
+            "properties": {
+              "group": {
+                "description": "All command with same group will be packed in tree.",
+                "type": "string",
+                "default": ""
+              },
+              "label": {
+                "description": "Label to be shown in tree. If none, command will be shown instead.",
+                "type": "string",
+                "default": ""
+              },
+              "command": {
+                "description": "Command to be executed.",
+                "type": "string"
+              },
+              "arguments": {
+                "description": "Arguments, can be string, promptString or pickString.",
+                "type": "array",
+                "default": [],
+                "items": {
+                  "type": [
+                    "string",
+                    "object"
+                  ],
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "title": "promptString",
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "label"
+                      ],
+                      "properties": {
+                        "label": {
+                          "description": "Shown in the quick input, provides context for the input.",
                           "type": "string"
                         }
                       }
+                    },
+                    {
+                      "title": "pickString",
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "options"
+                      ],
+                      "properties": {
+                        "options": {
+                          "description": "An array of options for the user to pick from.",
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
-                  }
-                ]
+                  ]
+                }
               }
             }
           }
