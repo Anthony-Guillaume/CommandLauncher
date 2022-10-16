@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onStartupFinished"
+    "onStartupFinished",
+    "onView:command-launcher"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -20,24 +21,102 @@
         "title": "Select precheck"
       }
     ],
-    "configuration": [
-      {
-        "title": "PickCommand",
-        "type": "object",
-        "properties": {
-          "basic.command": {
-            "type": "string",
-            "description": "Command to be execute with argsToPick.",
-            "default": ""
-          },
-          "basic.argsToPick": {
-            "type": "array",
-            "description": "Args that can be pass to basic.command.",
-            "default": []
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "command-launcher",
+          "title": "Command launcher",
+          "icon": "$(heart)"
+        }
+      ]
+    },
+    "views": {
+      "command-launcher": [
+        {
+          "id": "launcher",
+          "name": "At your command",
+          "contextualTitle": "launcher"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "TESTING",
+      "properties": {
+        "basic.actions": {
+          "type": "object",
+          "description": "Array of actions to be provided to user.",
+          "additionalProperties": false,
+          "required": [
+            "command",
+            "arguments"
+          ],
+          "properties": {
+            "group": {
+              "description": "All command with same group will be packed in tree.",
+              "type": "string",
+              "default": ""
+            },
+            "label": {
+              "description": "Label to be shown in tree. If none, command will be shown instead.",
+              "type": "string",
+              "default": ""
+            },
+            "command": {
+              "description": "Command to be executed.",
+              "type": "string"
+            },
+            "arguments": {
+              "description": "",
+              "type": "array",
+              "default": [],
+              "items": {
+                "description": "Arguments, can be string or input e.g. [-R, -i, ${input:myScript.sh}]",
+                "type": [
+                  "string",
+                  "object"
+                ],
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "title": "promptString",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "label"
+                    ],
+                    "properties": {
+                      "label": {
+                        "description": "Shown in the quick input, provides context for the input.",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "title": "pickString",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "options"
+                    ],
+                    "properties": {
+                      "options": {
+                        "description": "An array of options for the user to pick from.",
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
           }
         }
       }
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

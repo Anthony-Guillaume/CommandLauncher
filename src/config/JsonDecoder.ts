@@ -1,11 +1,23 @@
-import { getConfiguration, PickCommand, Section } from "./Configuration";
+import { Action, fillType, getConfiguration, Section } from "./Configuration";
 
-export function loadArgsToPick(): string[] {
-    return getConfiguration().get<string[]>(Section.argsToPick, []);
+export function loadActions(): Action {
+    const actions = getConfiguration().get<Action>(Section.actions,
+        {
+            command: "",
+            arguments: []
+        }
+    );
+    console.log(JSON.stringify(actions));
+    actions.arguments.forEach(v => fillType(v));
+    fillUndefined(actions);
+    return actions;
 }
 
-export function loadCommand(): PickCommand {
-    return {
-        name: getConfiguration().get<string>(Section.command, "")
-    };
+function fillUndefined(action: Action) {
+    if (action.label === undefined) {
+        action.label = action.command;
+    }
+    if (action.group === undefined) {
+        action.group = "";
+    }
 }
