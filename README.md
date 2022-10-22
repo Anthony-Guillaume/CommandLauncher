@@ -10,10 +10,9 @@ Run command with any sequences of promptString, pickString or raw string paramet
 
 ## Extension Settings
 
-| Settings                 | Description                    |
-| ------------------------ | ------------------------------ |
-| commandLauncher.actions  | Array of actions containing    |
-|                          | command, args, label and group.|
+| Settings                 | Description                                                 |
+| ------------------------ | ----------------------------------------------------------- |
+| commandLauncher.actions  | Array of actions containing  command, args, label and group.|
 
 Exemple:
 
@@ -54,6 +53,6 @@ Exemple:
 
 ## Release Notes
 
-### 1.0.0
+### 0.0.1
 
 Initial release.

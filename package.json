@@ -3,6 +3,11 @@
   "displayName": "Command launcher",
   "description": "Run command with differents type of arguments.",
   "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/Anthony-Guillaume/CommandLauncher"
+  },
   "engines": {
     "vscode": "^1.72.0"
   },
