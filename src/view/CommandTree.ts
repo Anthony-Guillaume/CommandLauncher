@@ -1,4 +1,5 @@
-import { Command, Event, EventEmitter, ProviderResult, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from "vscode";
+import { Event, EventEmitter, ProviderResult, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from "vscode";
+import { Action } from "../config/Configuration";
 import { loadItems } from "./CommandTreeBuilder";
 
 export class CommandTreeProvider implements TreeDataProvider<Item> {
@@ -31,13 +32,15 @@ export class CommandTreeProvider implements TreeDataProvider<Item> {
 
 export class Item extends TreeItem {
     children: Item[] | undefined;
+    action: Action | undefined;
 
-    constructor(label: string, command?: Command, children?: Item[]) {
+    constructor(label: string, action?: Action, children?: Item[]) {
         super(
             label,
             children === undefined ? TreeItemCollapsibleState.None :
                 TreeItemCollapsibleState.Expanded);
         this.children = children;
-        this.command = command;
+        this.action = action;
+        this.contextValue = (children === undefined || !children) ? 'hasCommand' : undefined;
     }
 }

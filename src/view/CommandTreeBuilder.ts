@@ -16,13 +16,7 @@ function buildItems(groups: Map<string, Action[]>): Item[] {
     const items: Item[] = [];
     groups.forEach((v, k) => {
         const children = v.map(action => {
-            const item: Item = new Item(buildLabel(action));
-            item.command = {
-                title: "",
-                command: 'launcher.onItemTreeSelected',
-                arguments: [action]
-            };
-            return item;
+            return new Item(buildLabel(action), action);
         });
         items.push(new Item(k, undefined, children));
     });

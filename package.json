@@ -20,6 +20,16 @@
         "command": "commandLauncher.refresh",
         "title": "Refresh",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "commandLauncher.run",
+        "title": "Run",
+        "icon": "$(run)"
+      },
+      {
+        "command": "commandLauncher.runLast",
+        "title": "Run last",
+        "icon": "$(refresh)"
       }
     ],
     "viewsContainers": {
@@ -46,6 +56,18 @@
           "command": "commandLauncher.refresh",
           "when": "view == launcher",
           "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "commandLauncher.run",
+          "when": "view == launcher && viewItem == hasCommand",
+          "group": "inline"
+        },
+        {
+          "command": "commandLauncher.runLast",
+          "when": "view == launcher && viewItem == hasCommand",
+          "group": "inline"
         }
       ]
     },
