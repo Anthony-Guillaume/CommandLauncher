@@ -1,24 +1,34 @@
-import { QuickPickItem, window } from "vscode";
+import { QuickPickItem, Terminal, window } from "vscode";
 import { Action, Input, PromptString, PickString } from "../config/Configuration";
 
 export class CommandRunner {
     actions: Map<Action, string> = new Map<Action, string>();
+    terminals: Map<Action, Terminal> = new Map<Action, Terminal>();
+
+    constructor() {
+        window.onDidCloseTerminal(terminal => {
+            const actionsToDelete: Action[] = [];
+            this.terminals.forEach((value, key) => {
+                if (value === terminal) {
+                    actionsToDelete.push(key);
+                }
+            });
+            actionsToDelete.forEach(v => this.terminals.delete(v));
+        });
+
+    }
 
     async runActionWithLastArguments(action: Action) {
         const terminalCommand = this.actions.get(action);
         if (terminalCommand !== undefined) {
-            const terminal = window.createTerminal(action.label);
-            terminal.sendText(terminalCommand);
+            this.executeCommand(terminalCommand, action);
         }
     }
 
     async showQuickPick(action: Action) {
         const terminalArgs: string[] = [];
         if (!action.arguments.length) {
-            const terminal = window.createTerminal(action.label);
-            const terminalCommand = action.command;
-            this.actions.set(action, terminalCommand);
-            terminal.sendText(action.command);
+            this.executeCommand(action.command, action);
         } else {
             for (let index = 0; index < action.arguments.length; index++) {
                 const input = action.arguments[index];
@@ -30,11 +40,21 @@ export class CommandRunner {
             const finalArgs = terminalArgs.reduce((previous: String, current: String) => {
                 return previous + ' ' + current;
             });
-            const terminal = window.createTerminal(action.label);
             const terminalCommand = action.command + " " + finalArgs;
-            this.actions.set(action, terminalCommand);
-            terminal.sendText(terminalCommand);
+            this.executeCommand(terminalCommand, action);
         }
+    }
+
+    executeCommand(text: string, action: Action) {
+        this.actions.set(action, text);
+        const currentTerminal = this.terminals.get(action);
+        if (currentTerminal !== undefined) {
+            currentTerminal.sendText(text);
+            return;
+        }
+        const terminal = window.createTerminal(action.label);
+        this.terminals.set(action, terminal);
+        terminal.sendText(text);
     }
 
     async handleArgument(arg: Input): Promise<string | undefined> {
