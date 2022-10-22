@@ -67,11 +67,10 @@ export class CommandRunner {
                 default: return undefined;
             }
         }
-
     }
 
     async askUserToPromptString(arg: PromptString): Promise<string | undefined> {
-        return window.showInputBox();
+        return window.showInputBox({ prompt: arg.inputContext });
     }
 
     async askUserToPickString(arg: PickString): Promise<string | undefined> {

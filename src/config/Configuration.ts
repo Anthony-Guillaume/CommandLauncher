@@ -23,7 +23,7 @@ export interface Action {
 
 export interface PromptString {
     type: 'PromptString';
-    label: string
+    inputContext: string
 }
 
 export interface PickString {
@@ -35,7 +35,7 @@ export function fillType(input: Input) {
     if (typeof input === 'string') {
         return;
     } else {
-        if ("label" in input) {
+        if ("inputContext" in input) {
             input.type = 'PromptString';
         } else if ("options" in input) {
             input.type = 'PickString';

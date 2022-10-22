@@ -1,7 +1,7 @@
 {
   "name": "command-launcher",
   "displayName": "Command launcher",
-  "description": "Add check box type to task input type",
+  "description": "Run command with differents type of arguments.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.72.0"
@@ -119,10 +119,10 @@
                       "type": "object",
                       "additionalProperties": false,
                       "required": [
-                        "label"
+                        "inputContext"
                       ],
                       "properties": {
-                        "label": {
+                        "inputContext": {
                           "description": "Shown in the quick input, provides context for the input.",
                           "type": "string"
                         }
@@ -139,6 +139,7 @@
                         "options": {
                           "description": "An array of options for the user to pick from.",
                           "type": "array",
+                          "minItems": 1,
                           "items": {
                             "type": "string"
                           }
