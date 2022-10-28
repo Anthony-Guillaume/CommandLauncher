@@ -1,4 +1,4 @@
-import { QuickPickItem, Terminal, window } from "vscode";
+import { QuickPickItem, Terminal, TerminalOptions, window } from "vscode";
 import { Action, Input, PromptString, PickString } from "../config/Configuration";
 
 export class CommandRunner {
@@ -52,7 +52,9 @@ export class CommandRunner {
             currentTerminal.sendText(text);
             return;
         }
-        const terminal = window.createTerminal(action.label);
+
+        const options: TerminalOptions = { name: action.label, cwd: action.cwd };
+        const terminal = window.createTerminal(options);
         this.terminals.set(action, terminal);
         terminal.sendText(text);
     }

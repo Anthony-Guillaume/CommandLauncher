@@ -92,6 +92,11 @@
               "arguments"
             ],
             "properties": {
+              "cwd": {
+                "description": "The current working directory.",
+                "type": "string",
+                "minLength": 1
+              },
               "group": {
                 "description": "All command with same group will be packed in tree.",
                 "type": "string",

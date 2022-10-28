@@ -18,7 +18,8 @@ export interface Action {
     command: string;
     arguments: Input[];
     label?: string;
-    group?: string
+    group?: string;
+    cwd?: string;
 }
 
 export interface PromptString {
