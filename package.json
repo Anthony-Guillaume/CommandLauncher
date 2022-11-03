@@ -4,6 +4,7 @@
   "description": "Run command with differents type of arguments.",
   "version": "0.0.1",
   "license": "MIT",
+  "publisher": "Agui",
   "repository": {
     "type": "github",
     "url": "https://github.com/Anthony-Guillaume/CommandLauncher"
