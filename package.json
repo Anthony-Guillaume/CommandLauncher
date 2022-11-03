@@ -1,5 +1,5 @@
 {
-  "name": "command-launcher",
+  "name": "command-launcher-tree",
   "displayName": "Command launcher",
   "description": "Run command with differents type of arguments.",
   "version": "0.0.1",
