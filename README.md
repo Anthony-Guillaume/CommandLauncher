@@ -8,6 +8,15 @@ Run command with any sequences of promptString, pickString or raw string paramet
 
 ![til](./res/Command_Launcher_run.gif)
 
+Support some variable substitution:
+
+    "${file}"
+    "${pathSeparator}"
+    "${fileBasename}"
+    "${fileBasenameNoExtension}"
+    "${fileExtname}"
+    "${fileDirname}"
+
 ## Extension Settings
 
 | Settings                 | Description                                                 |
@@ -52,6 +61,11 @@ Exemple:
 ```
 
 ## Release Notes
+
+### 0.0.2
+
+Support some variable substitution.
+Add precommand.
 
 ### 0.0.1
 

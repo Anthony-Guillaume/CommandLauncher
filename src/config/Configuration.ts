@@ -20,6 +20,7 @@ export interface Action {
     label?: string;
     group?: string;
     cwd?: string;
+    preCommand?: string;
 }
 
 export interface PromptString {

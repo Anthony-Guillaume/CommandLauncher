@@ -1,5 +1,6 @@
 import { QuickPickItem, Terminal, TerminalOptions, window } from "vscode";
 import { Action, Input, PromptString, PickString } from "../config/Configuration";
+import { VariableSubstituter } from "./VariableParser";
 
 export class CommandRunner {
     actions: Map<Action, string> = new Map<Action, string>();
@@ -26,6 +27,9 @@ export class CommandRunner {
     }
 
     async showQuickPick(action: Action) {
+        const substituter = new VariableSubstituter(action);
+        substituter.substitute();
+
         const terminalArgs: string[] = [];
         if (!action.arguments.length) {
             this.executeCommand(action.command, action);
@@ -53,10 +57,14 @@ export class CommandRunner {
             return;
         }
 
-        const options: TerminalOptions = { name: action.label, cwd: action.cwd };
-        const terminal = window.createTerminal(options);
-        this.terminals.set(action, terminal);
-        terminal.sendText(text);
+        const terminal = this.createTerminal(action);
+        const preCommand = action.preCommand;
+
+        if (preCommand !== undefined && preCommand.length) {
+            terminal.sendText(preCommand + " ; " + text);
+        } else {
+            terminal.sendText(text);
+        }
     }
 
     async handleArgument(arg: Input): Promise<string | undefined> {
@@ -96,5 +104,13 @@ export class CommandRunner {
             canPickMany: true
         });
     }
+
+    createTerminal(action: Action): Terminal {
+        const options: TerminalOptions = { name: action.label, cwd: action.cwd };
+        const terminal = window.createTerminal(options);
+        this.terminals.set(action, terminal);
+        return terminal;
+    }
+
 
 }
